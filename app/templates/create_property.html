@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<h1 class="page-header">Add New Property</h1>
+
+{% include 'flash_messages.html' %}
+
+<div class="form-container">
+  {# Add the appropriate method and enctype attributes to the form tag to allow for file uploads #}
+  <form method="post" enctype="multipart/form-data" action="{{ url_for('create_property') }}">
+    
+    {{ form.csrf_token }}
+
+    <!-- Title -->
+    <div class="property-form">
+      <div class="form-group">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="property-form">
+      <div class="form-group">
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control") }}
+      </div>
+    </div>
+
+    <!-- Bedrooms -->
+    <div class="property-form">
+      <div class="form-group">
+        {{ form.bedrooms.label(class="form-label") }}
+        {{ form.bedrooms(class="form-control") }}
+      </div>
+      <!-- Bathrooms -->
+      <div class="form-group">
+        {{ form.bathrooms.label(class="form-label") }}
+        {{ form.bathrooms(class="form-control") }}
+      </div>
+    </div>
+
+    <!-- Price -->
+    <div class="property-form">
+      <div class="form-group">
+        {{ form.price.label(class="form-label") }}
+        {{ form.price(class="form-control") }}
+      </div>
+      <!-- Type -->
+      <div class="form-group">
+        {{ form.type.label(class="form-label") }}
+        {{ form.type(class="form-select") }}
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="property-form">
+      <div class="form-group">
+        {{ form.location.label(class="form-label") }}
+        {{ form.location(class="form-control") }}
+      </div>
+    </div>
+
+    <!-- Photo -->
+    <div class="property-form">
+      <div class="form-group">
+        {{ form.photo.label(class="form-label") }}
+        {{ form.photo(class="form-control") }}
+      </div>
+    </div>
+
+    <button type="submit" name="submit" class="btn">Add Property</button>
+    
+  </form>
+
+</div>
+{% endblock %}

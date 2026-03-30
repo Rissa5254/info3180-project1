@@ -1,3 +1,74 @@
 body {
-    padding-top: 5rem;
+    padding-top: 5rem; 
+    background: rgb(240, 229, 229); 
+}
+
+.page-header{
+    margin-left: 40px;
+}
+
+.form-container{
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 670px;
+    border-left: 30px;
+    padding: 30px;
+    margin-left: 40px;
+    background-color: #fff;
+}
+
+.property-form{
+    display: flex;
+    margin-bottom: 15px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+    flex-wrap: wrap;
+}
+
+.form-group{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn{
+    background-color: rgb(99, 99, 245);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: white;
+    border: none ;
+    cursor: pointer;
+    padding: 10px 15px;
+    margin-top: 5px;
+}
+
+.btn:hover{
+    background-color: rgb(241, 164, 49);
+    color: #fff;
+}
+
+/* specific adjustments */
+input[name="title"],
+textarea[name="description"]{
+    max-width: 555px;
+}
+
+input[name="bedrooms"],
+input[name="bathrooms"]{
+    max-width: 250px;
+}
+
+input[name="price"]{
+    max-width: 250px;
+}
+
+select[name="type"]{
+    max-width: 250px;
+}
+
+input[name="location"]{
+    max-width: 250px;
+}
+
+input[name="photo"]{
+    max-width: 260px;
 }

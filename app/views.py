@@ -5,13 +5,18 @@ Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
 This file contains the routes for your application.
 """
 
-from app import app
-from flask import render_template, request, redirect, url_for
+import os
+from app import app, db
+from flask import flash, render_template, request, redirect, url_for
+from werkzeug.utils import secure_filename
+from app.forms import PropertyForm
+from app.models import Property
 
 
 ###
 # Routing for your application.
 ###
+
 
 @app.route('/')
 def home():
@@ -23,6 +28,61 @@ def home():
 def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
+
+
+@app.route('/properties/create', methods=['POST', 'GET'])
+def create_property():
+    """Displays the form to add a new property"""
+    
+    # Instantiate your form class
+    form = PropertyForm()
+    
+    if request.method == 'POST':
+        
+        # Validate form upon submission
+        if form.validate_on_submit():
+            
+            # Handle file upload
+            photo = form.photo.data
+            
+            # Get file data and save to your uploads folder
+            filename = secure_filename(photo.filename) 
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            
+            prop = Property(
+                title = form.title.data,
+                description = form.description.data,
+                bedrooms = form.bedrooms.data,
+                bathrooms = form.bathrooms.data,
+                price = form.price.data,
+                type = form.type.data,
+                location = form.location.data,
+                photo = filename
+            )
+            
+            # Save the db to PostgreSQL Database
+            db.session.add(prop)
+            db.session.commit()
+        
+            # Remember to flash a message to the user
+            flash('Property added sucessfully.', 'success')
+            return redirect(url_for("list_properties"))    # The user should be redirected to the "/properties" instead
+
+    """Render the website's new property page."""
+    return render_template('create_property.html', form=form)
+
+
+@app.route('/properties')
+def list_properties():
+    properties = db.session.execute(db.select(Property)).scalars()
+    """Render the website's list of properties page"""
+    return render_template('properties.html', properties=properties)
+
+
+@app.route('/properties/<int:propertyid>')
+def get_property(propertyid):
+    """Render the website's properties by specific property id"""
+    return render_template('property_detail')
 
 
 ###
