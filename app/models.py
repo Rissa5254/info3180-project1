@@ -3,18 +3,32 @@ from . import db
 class Property(db.Model):
     __tablename__ = 'properties'
 
-    id = db.Column(db.Integer, primary_key=True)   # auto-increment ID
-    title = db.Column(db.String(80))
-    description = db.Column(db.String(80))
-    bedrooms = db.Column(db.String(80), unique=True)
-    bathrooms = db.Column(db.String(128))
-    price = db.Column(db.String(128))
-    type = db.Column(db.String(128))
-    location = db.Column(db.String(128))
-    photo = db.Column(db.String(128))  # store filename
+    id = db.Column(db.Integer, primary_key=True, autoincrements=True)   # auto-increment ID
+    title = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    bedrooms = db.Column(db.Integer, nullable=False)
+    bathrooms = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float(50), nullable=False)
+    type = db.Column(db.String(30), nullable=False)
+    location = db.Column(db.String(128), nullable=False)
+    photo = db.Column(db.String(120), nullable=False)  # store filename
     
-    def __init__(self, first_name, last_name, username, password):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
+    def __init__(self, title, description, bedrooms, bathrooms, price, type, location, photo):
+        self.title = title
+        self.description = description
+        self.bedrooms = bedrooms
+        self.bathrooms = bathrooms
+        self. price = price
+        self.type = type
+        self.location = location
+        self.photo = photo
+        
+    def get_id(self):
+        try:
+            return unicode(self.id)  # python 2 support
+        except NameError:
+            return str(self.id)  # python 3 support
+
+    def __repr__(self):
+        return '<Property %r>' % (self.title)
         
