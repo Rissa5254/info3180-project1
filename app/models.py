@@ -3,7 +3,7 @@ from . import db
 class Property(db.Model):
     __tablename__ = 'properties'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrements=True)   # auto-increment ID
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)   # auto-increment ID
     title = db.Column(db.String(128), nullable=False)
     description = db.Column(db.Text, nullable=False)
     bedrooms = db.Column(db.Integer, nullable=False)
@@ -18,7 +18,7 @@ class Property(db.Model):
         self.description = description
         self.bedrooms = bedrooms
         self.bathrooms = bathrooms
-        self. price = price
+        self.price = price
         self.type = type
         self.location = location
         self.photo = photo

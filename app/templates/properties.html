@@ -3,7 +3,24 @@
 {% block main %}
 <h1 class="page-header">Properties</h1>
 
-{% for prpoerty in properties %}
-<div class="" {property}></div>
-{% endfor %}
+<div class="properties">
+    {% for prpoerty in properties %}
+    <div class="property-card">
+         <!--Property Image-->
+        <img src="{{ url_for('get_image', filename=property.photo) }}", alt="Image of Property" />
+
+         <!--Property Information-->
+        <div class="property-details">
+            <h3>{{ property.title }}</h3>
+            <p class="location">{{ property.location }}</p>
+            <p class="price">${{ property.price }}</p>
+
+            <!--View Property Button-->
+            <a href="{{url_for('get_property', propertyid=property.id) }}" class="view-btn"> View Property</a>    
+        </div>
+    
+    </div>
+    {% endfor %}
+
+</div>
 {% endblock %}

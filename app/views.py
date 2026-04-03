@@ -7,7 +7,7 @@ This file contains the routes for your application.
 
 import os
 from app import app, db
-from flask import flash, render_template, request, redirect, url_for
+from flask import flash, render_template, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from app.forms import PropertyForm
 from app.models import Property
@@ -37,36 +37,37 @@ def create_property():
     # Instantiate your form class
     form = PropertyForm()
     
-    if request.method == 'POST':
+    
+    # Validate form upon submission
+    if form.validate_on_submit():
+        title = form.title.data
+        description = form.description.data
+        bedrooms = form.bedrooms.data
+        bathrooms = form.bathrooms.data
+        price = form.price.data
+        type = form.type.data
+        location = form.location.data
         
-        # Validate form upon submission
-        if form.validate_on_submit():
-            
-            # Handle file upload
-            photo = form.photo.data
-            
-            # Get file data and save to your uploads folder
-            filename = secure_filename(photo.filename) 
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            
-            prop = Property(
-                title = form.title.data,
-                description = form.description.data,
-                bedrooms = form.bedrooms.data,
-                bathrooms = form.bathrooms.data,
-                price = form.price.data,
-                type = form.type.data,
-                location = form.location.data,
-                photo = filename
-            )
+        # Handle file upload
+        photo = form.photo.data
+        
+        # Get file data and save to your uploads folder
+        filename = secure_filename(photo.filename) 
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+        try:        
+            prop = Property(title, description, bedrooms, bathrooms, price, type, location, filename)
             
             # Save the db to PostgreSQL Database
             db.session.add(prop)
             db.session.commit()
+        except:
+            flash('Property not listed!')
+            return redirect(url_for("list_properties"))
         
-            # Remember to flash a message to the user
-            flash('Property added sucessfully.', 'success')
-            return redirect(url_for("list_properties"))    # The user should be redirected to the "/properties" instead
+        # Remember to flash a message to the user
+        flash('Property added sucessfully.', 'success')
+        return redirect(url_for("list_properties"))    # The user should be redirected to the "/properties" instead
 
     """Render the website's new property page."""
     return render_template('create_property.html', form=form)
@@ -82,7 +83,13 @@ def list_properties():
 @app.route('/properties/<int:propertyid>')
 def get_property(propertyid):
     """Render the website's properties by specific property id"""
-    return render_template('property_detail')
+    return render_template('property_info.html')
+
+
+@app.route('/uploads/<filename>')
+def get_image(filename):
+    """Return a specific image from the upload folder"""
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 ###
