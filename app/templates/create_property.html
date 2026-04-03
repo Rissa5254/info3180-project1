@@ -7,9 +7,9 @@
 
 <div class="form-container">
   {# Add the appropriate method and enctype attributes to the form tag to allow for file uploads #}
-  <form method="post" enctype="multipart/form-data" action="{{ url_for('create_property') }}">
+  <form method="POST" enctype="multipart/form-data" action="{{ url_for('create_property') }}" >
     
-    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
 
     <!-- Title -->
     <div class="property-form">

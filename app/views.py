@@ -7,7 +7,7 @@ This file contains the routes for your application.
 
 import os
 from app import app, db
-from flask import flash, render_template, request, redirect, url_for, send_from_directory
+from flask import flash, render_template, request, redirect, url_for, send_from_directory, flash, session, abort
 from werkzeug.utils import secure_filename
 from app.forms import PropertyForm
 from app.models import Property
@@ -30,13 +30,12 @@ def about():
     return render_template('about.html', name="Mary Jane")
 
 
-@app.route('/properties/create', methods=['POST', 'GET'])
+@app.route('/properties/create', methods=['GET', 'POST'])
 def create_property():
     """Displays the form to add a new property"""
     
     # Instantiate your form class
     form = PropertyForm()
-    
     
     # Validate form upon submission
     if form.validate_on_submit():
@@ -55,15 +54,11 @@ def create_property():
         filename = secure_filename(photo.filename) 
         photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
-        try:        
-            prop = Property(title, description, bedrooms, bathrooms, price, type, location, filename)
+        prop = Property(title=title, description=description, bedrooms=bedrooms, bathrooms=bathrooms, price=price, type=type, location=location, photo=filename)
             
-            # Save the db to PostgreSQL Database
-            db.session.add(prop)
-            db.session.commit()
-        except:
-            flash('Property not listed!')
-            return redirect(url_for("list_properties"))
+        # Save the db to PostgreSQL Database
+        db.session.add(prop)
+        db.session.commit()
         
         # Remember to flash a message to the user
         flash('Property added sucessfully.', 'success')
@@ -75,7 +70,7 @@ def create_property():
 
 @app.route('/properties')
 def list_properties():
-    properties = db.session.execute(db.select(Property)).scalars()
+    properties = Property.query.all()
     """Render the website's list of properties page"""
     return render_template('properties.html', properties=properties)
 
@@ -83,7 +78,8 @@ def list_properties():
 @app.route('/properties/<int:propertyid>')
 def get_property(propertyid):
     """Render the website's properties by specific property id"""
-    return render_template('property_info.html')
+    property = Property.query.get(propertyid)
+    return render_template('property_info.html', property=property)
 
 
 @app.route('/uploads/<filename>')
