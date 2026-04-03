@@ -72,3 +72,41 @@ input[name="location"]{
 input[name="photo"]{
     max-width: 260px;
 }
+
+.properties {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.property-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.property-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.property-details {
+    padding: 15px;
+}
+
+.property-details h4 {
+    margin-bottom: 5px;
+}
+
+.location {
+    color: gray;
+    font-size: 14px;
+}
+
+.price {
+    font-weight: bold;
+    color: rgb(99, 99, 245);
+    margin: 10px 0;
+}

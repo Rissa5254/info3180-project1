@@ -8,7 +8,7 @@ class Property(db.Model):
     description = db.Column(db.Text, nullable=False)
     bedrooms = db.Column(db.Integer, nullable=False)
     bathrooms = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Float(50), nullable=False)
+    price = db.Column(db.Numeric(precision=18, scale=2), nullable=False)
     type = db.Column(db.String(30), nullable=False)
     location = db.Column(db.String(128), nullable=False)
     photo = db.Column(db.String(120), nullable=False)  # store filename

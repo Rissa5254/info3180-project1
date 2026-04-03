@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SelectField, TextAreaField, FloatField, FileField
+from wtforms import StringField, IntegerField, SelectField, TextAreaField, DecimalField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms.validators import InputRequired, NumberRange
 
@@ -11,7 +11,7 @@ class PropertyForm(FlaskForm):
     bedrooms = IntegerField('No. of Rooms', validators=[InputRequired(), NumberRange(min=0)])
     bathrooms = IntegerField('No. of Bathrooms', validators=[InputRequired(), NumberRange(min=0)])
     
-    price = FloatField('Price', validators=[InputRequired()])
+    price = DecimalField('Price', places=2, validators=[InputRequired()])
     
     type = SelectField('Property Type', choices=[('House', 'House'), ('Apartment', 'Apartment')], validators=[InputRequired()])
     
