@@ -7,17 +7,21 @@
     {% for property in properties %}
     <div class="property-card">
          <!--Property Image-->
-        <img src="{{ url_for('get_image', filename=property.photo) }}", alt="{{ property.title }}" />
-
+        <img src="{{ url_for('get_image', filename=property.photo) }}" alt="{{ property.title }}"  class="prop-img" />
+        
          <!--Property Information-->
         <div class="property-details">
             <h3>{{ property.title }}</h3>
-            <p class="location">{{ property.location }}</p>
+            <p class="location">
+                <i class="bi bi-geo-alt"></i>
+                {{ property.location }}
+            </p>
             <p class="price">${{ "{:,.2f}".format(property.price) }}</p>
+         </div>
 
             <!--View Property Button-->
             <a href="{{url_for('get_property', propertyid=property.id) }}" class="view-btn"> View Property</a>    
-        </div>
+       
     
     </div>
     {% endfor %}
